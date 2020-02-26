@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:refreshable_list/src/base_header.dart';
-import 'src/base_refresh_list.dart';
+import '../refreshable_list.dart';
+
+
 
 class SimpleRefreshHeader extends BaseHeader {
 
