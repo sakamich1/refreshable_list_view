@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import 'base_header.dart';
+import 'src/base_header.dart';
 
 abstract class BaseRefreshList extends StatefulWidget {
   final Refresh onRefresh;
