@@ -1,18 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:refreshable_list/src/base_header.dart';
-import '../refreshable_list.dart';
 
+import '../refreshable_list.dart';
+import 'base_header.dart';
 
 
 class SimpleRefreshHeader extends BaseHeader {
 
-  final Refresh onRefresh;
-  final Refresh onLoadMore;
-
-  SimpleRefreshHeader(double headerHeight,
-                      {this.onRefresh,this.onLoadMore,Key key})
+  SimpleRefreshHeader(double headerHeight,{Key key})
     : super(headerHeight,key: key);
 
   @override
@@ -75,26 +71,31 @@ class SimpleRefreshHeaderState extends BaseHeaderState<SimpleRefreshHeader>
         ),
       )
     );
-  
+
   //根据刷新状态获取图标
   Widget _getIcon() {
     if (status == LoadStatus.REFRESHING) {
       return SizedBox(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
-          backgroundColor: Colors.white,
+        child: CupertinoActivityIndicator(
+         // valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
+         // backgroundColor: Colors.white,
         ),
         height: 20,
         width: 20,
       );
     } else if (status == LoadStatus.REFRESHED) {
-      return SizedBox(width: 20,height: 20,); //隐藏进度条 返回一个空盒子
+      return Icon(
+        Icons.check,
+        size: 20,
+        color: Colors.black45,
+      ); //隐藏进度条 返回一个空盒子
     } else {
       return RotationTransition(
         turns: _animation,
         child: Icon(
           Icons.arrow_downward,
           size: 28,
+          color: Colors.black45,
         ),
       );
     }
@@ -121,7 +122,9 @@ class SimpleRefreshHeaderState extends BaseHeaderState<SimpleRefreshHeader>
 
   @override
   void updateHeader(v) {
-    currScrolled = v as double;
+    setState(() {
+      currScrolled = v as double;
+    });
     if (currScrolled <= 0) {
       _animationCtr.forward();
     }

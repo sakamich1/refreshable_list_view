@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import '../refreshable_list.dart';
 
+import '../refreshable_list.dart';
 
 typedef Future Refresh();
 
