@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 
 import 'refreshable_list.dart';
 
-typedef Future Refresh();
-
 abstract class BaseHeader extends StatefulWidget {
   final double headerHeight;
 
