@@ -5,8 +5,8 @@ import 'package:refreshable_list/base_footer.dart';
 import 'package:refreshable_list/base_header.dart';
 
 abstract class BaseRefreshList extends StatefulWidget {
-  final Refresh onRefresh;
-  final Refresh onLoadMore;
+  final Future Function() onRefresh;
+  final Future Function() onLoadMore;
 
   BaseRefreshList({this.onRefresh,this.onLoadMore});
 }
