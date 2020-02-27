@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:refreshable_list/src/base_footer.dart';
 import 'package:refreshable_list/src/base_header.dart';
@@ -27,6 +29,8 @@ abstract class BaseRefreshListState<W extends BaseRefreshList,H extends BaseHead
   LoadStatus status = LoadStatus.IDLE;
 
   bool isFreeScrolling = false;
+
+  int currItemCount = 0;
 
   GlobalKey<H> headerKey = GlobalKey<H>();
 
@@ -153,6 +157,8 @@ abstract class BaseRefreshListState<W extends BaseRefreshList,H extends BaseHead
   void onScrollStart(ScrollMetrics metrics) {
     //获取listView最大滚动距离（高度）
     maxScrollExtent = metrics.maxScrollExtent;
+    currItemCount = getItemCount();
+    print('init count -> $currItemCount');
   }
 
   @mustCallSuper
@@ -178,8 +184,6 @@ abstract class BaseRefreshListState<W extends BaseRefreshList,H extends BaseHead
   @mustCallSuper
   void onScrollEnd(ScrollMetrics metrics) {
     isFreeScrolling = false;
-
-    print('end max -> $currScrolled');
   }
 
   //刷新时的钩子方法
@@ -212,19 +216,26 @@ abstract class BaseRefreshListState<W extends BaseRefreshList,H extends BaseHead
     status = LoadStatus.LOADED;
     headerKey.currentState.onScrollStatusChanged(status);
     footerKey.currentState.onScrollStatusChanged(status);
-    //停顿一下并缩回footer
-    print('new max -> $maxScrollExtent');
-    Future.delayed(Duration(milliseconds: 500))
-      .then((_) {
-      status = LoadStatus.IDLE;
-      headerKey.currentState.onScrollStatusChanged(status);
-      footerKey.currentState.onScrollStatusChanged(status);
-    })
-      .whenComplete(() { //等回弹动画执行完后再把状态更新成idle
-      /*status = LoadStatus.IDLE;
-      headerKey.currentState.onScrollStatusChanged(status);
-      footerKey.currentState.onScrollStatusChanged(status);*/
-    });
+
+    int newCount = getItemCount();
+    if (newCount > currItemCount) {
+      //有新的item插入，不缩回footer
+      Future.delayed(Duration(milliseconds: 500))
+        .then((_) {
+        status = LoadStatus.IDLE;
+        headerKey.currentState.onScrollStatusChanged(status);
+        footerKey.currentState.onScrollStatusChanged(status);
+      });
+    } else {
+      //停顿一下并缩回footer
+      Future.delayed(Duration(milliseconds: 500))
+        .then((_) => _hideFooterSmoothly())
+        .whenComplete(() { //等回弹动画执行完后再把状态更新成idle
+        status = LoadStatus.IDLE;
+        headerKey.currentState.onScrollStatusChanged(status);
+        footerKey.currentState.onScrollStatusChanged(status);
+      });
+    }
   }
 }
 
