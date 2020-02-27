@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../refreshable_list.dart';
+import 'refreshable_list.dart';
 import 'base_footer.dart';
 
 class SimpleLoadFooter extends BaseFooter {

@@ -1,8 +1,8 @@
 import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
-import 'package:refreshable_list/src/base_footer.dart';
-import 'package:refreshable_list/src/base_header.dart';
+import 'package:refreshable_list/base_footer.dart';
+import 'package:refreshable_list/base_header.dart';
 
 abstract class BaseRefreshList extends StatefulWidget {
   final Refresh onRefresh;
