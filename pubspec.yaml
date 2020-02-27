@@ -1,6 +1,6 @@
 name: refreshable_list
 description: A refreshable listview with a customizable header &amp; footer
-version: 0.5.2
+version: 0.5.3
 homepage: https://github.com/sakamich1/refreshable_list_view
 
 environment:
